@@ -1,0 +1,6 @@
+<h1>New Tweet</h1>
+<h2><%= current_user.username %></h2>
+
+<%= render 'form', tweet: @tweet %>
+
+<%= link_to 'Back', tweets_path %>
