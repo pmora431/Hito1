@@ -30,14 +30,15 @@ class TweetsController < ApplicationController
 
   # POST /tweets or /tweets.json
   def create
-    @tweet = Tweet.new(tweet_params.merge(user: current_user, username: current_user.username, userpicture: current_user.picture))
+    @tweet = Tweet.new(tweet_params.merge(user: current_user))
 
     respond_to do |format|
       if @tweet.save
-        format.html { redirect_to tweets_path, alert: "Tweet was successfully created." }
+        format.html { redirect_to tweets_path, notice: "Tweet was successfully created." }
         format.json { render :index, status: :created, location: @tweet }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        @tweets = Tweet.order(sort_column + " " + sort_direction).page(params[:page])
+        format.html { render :index, status: :unprocessable_entity }
         format.json { render json: @tweet.errors, status: :unprocessable_entity }
       end
     end
@@ -73,7 +74,7 @@ class TweetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def tweet_params
-      params.require(:tweet).permit(:content, :user_id, :username, :userpicture)
+      params.require(:tweet).permit(:content, :user_id)
     end
 
     def initialize_todo

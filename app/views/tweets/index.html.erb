@@ -1,26 +1,18 @@
-<p id="notice"><%= notice %></p>
-
 <div class="container text-center bg-primary">
   <% if current_user %>
-    <%= form_with model: @tweet do |form| %>
-      <div class="field">
-        <h5><%= form.label "Nuevo Tweet", class: 'form-label text-light pt-2'  %></h5>
-        <%= form.text_area :content, class: 'form-control' %>
-      </div>
-        <div class="actions">
-        <button type="submit" class="btn btn-success mb-2">Crear</button>
-      </div>
-    <% end %>
+  <%= render 'form', tweet: @tweet %>
   <% end %>
 </div>
 <br>
-<%= paginate @tweets %>
 <br>
+<div class="container text-center">
+<%= paginate @tweets %>
 <% @tweets.each do |tweet| %>
 <div class="card text-center">
   <div class="card-header">
-    <%= tweet.username %>
-    <%= tweet.userpicture %>
+    <%= image_tag(tweet.user.picture, class: 'card-img-top') %>
+    <%= tweet.user.username %>
+    <%= tweet.user.picture %>
   </div>
   <div class="card-body">
     <p class="card-text"><%= tweet.content %></p>
@@ -33,5 +25,5 @@
 </div>
 <br>
 <% end %>
-<br>
 <%= paginate @tweets %>
+</div>

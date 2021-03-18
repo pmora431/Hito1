@@ -1,4 +1,5 @@
 class Tweet < ApplicationRecord
   belongs_to :user
-  paginates_per 5
+  validates :content,presence: true
+  paginates_per 50
 end

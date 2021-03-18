@@ -31,6 +31,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 #Authenticate
 gem 'devise'
 
+gem 'faker'
+
 #Paginate
 gem 'kaminari'
 

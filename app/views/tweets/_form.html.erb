@@ -1,9 +1,9 @@
 <%= form_with(model: tweet) do |form| %>
   <% if tweet.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(tweet.errors.count, "error") %> prohibited this tweet from being saved:</h2>
+      <h5 class="text-light"><%= pluralize(tweet.errors.count, "error") %> al crear el nuevo tweet:</h5>
 
-      <ul>
+      <ul class="list-unstyled text-light">
         <% tweet.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,12 +11,15 @@
     </div>
   <% end %>
 
+  <h5><%= form.label "Nuevo Tweet", class: 'form-label text-light pt-2'  %></h5>
+
   <div class="field">
-    <%= form.label :content %>
-    <%= form.text_field :content %>
+    <%= form.text_area :content, class: 'form-control' %>
   </div>
 
+  <br>
+
   <div class="actions">
-    <%= form.submit %>
+    <button type="submit" class="btn btn-success mb-2">Crear</button>
   </div>
 <% end %>

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
     <title>Twitter</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -10,7 +11,7 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
+  <body>
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <i class="fab fa-twitter fa-2x text-light"></i>
@@ -22,14 +23,14 @@
       <li class="nav-item">
       <%if user_signed_in? %>
       <% else %>
-        <a class="nav-link" href="/users/sign_up">Registrarse</a>
+        <%= link_to 'Registrarse', new_user_registration_path, class: 'nav-link' %>
       <% end %>
       </li>
       <li class="nav-item active">
         <%if user_signed_in? %>
-          <a class="nav-link" href="#"><%= link_to 'Cerrar Sesión', destroy_user_session_path, method: :delete %></a>
+          <%= link_to 'Cerrar Sesión', destroy_user_session_path, method: :delete, class: 'nav-link'  %>
         <% else %>
-          <a class="nav-link" href="#"><%= link_to 'Iniciar Sesión', user_session_path %></a>
+          <%= link_to 'Iniciar Sesión', user_session_path, class: 'nav-link' %>
         <% end %>
       </li>
     </ul>
@@ -37,7 +38,6 @@
 </nav>
   </header>
   
-  <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
