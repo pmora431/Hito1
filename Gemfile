@@ -36,6 +36,9 @@ gem 'faker'
 #Paginate
 gem 'kaminari'
 
+#Search
+#gem 'stimulus'
+
 # Gemfile
 gem 'activeadmin'
 
