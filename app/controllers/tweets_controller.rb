@@ -1,18 +1,10 @@
 class TweetsController < ApplicationController
-  before_action :set_tweet, only: %i[ show edit update destroy ]
+  before_action :set_tweet, only: %i[ show edit update destroy retweet ]
   before_action :initialize_todo, only: [:index]
 
   # GET /tweets or /tweets.json
   def index
-    @tweets = Tweet.order(sort_column + " " + sort_direction).page(params[:page])
-  end
-
-  def sort_column
-    Tweet.column_names.include?(params[:sort]) ? params[:sort] : "created_at"
-  end
-
-  def sort_direction
-      %w[asc desc].include?(params[:direction]) ? params[:direction] : "DESC"
+    @tweets = Tweet.all.page(params[:page])
   end
 
   # GET /tweets/1 or /tweets/1.json
@@ -40,6 +32,27 @@ class TweetsController < ApplicationController
         @tweets = Tweet.order(sort_column + " " + sort_direction).page(params[:page])
         format.html { render :index, status: :unprocessable_entity }
         format.json { render json: @tweet.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def retweet
+    original_tweet = Tweet.find(params[:id])
+
+    @retweet = Tweet.new(
+      user_id: current_user.id,
+      content: original_tweet.content,
+      retweet_id: original_tweet.id
+    )
+
+    respond_to do |format|
+      if @retweet.save
+        format.html { redirect_to tweets_path, notice: "Retweet was successfully created." }
+        format.json { render :index, status: :created, location: @retweet }
+      else
+        @retweet = Tweet.order(sort_column + " " + sort_direction).page(params[:page])
+        format.html { render :index, status: :unprocessable_entity }
+        format.json { render json: @retweet.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -74,10 +87,14 @@ class TweetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def tweet_params
-      params.require(:tweet).permit(:content, :user_id)
+      params.require(:tweet).permit(:content, :user_id, :retweet_id, :retweet)
     end
 
     def initialize_todo
       @tweet = Tweet.new
+    end
+
+    def retweet_params
+      params.require(:retweet).permit(:retweet_id, :content).merge(user_id: current_user.id)
     end
 end

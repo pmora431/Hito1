@@ -6,12 +6,17 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-#(2..5).each { |i| user = User.create(username: "User#{i}", 
-#                                     picture: "user#{i}.jpg", 
-#                                     email: "user#{i}@user.com", 
-#                                     password: "12345")
-#}
-Tweet.destroy_all
+(1..5).to_a.each do |i| 
+    user = User.create!( username: "User#{i}", 
+                        picture: "user#{i}.jpg", 
+                        email: "user#{i}@user.com", 
+                        password: "123456")
+    puts "Se ha creado el usuario #{user.username}"
+end
+
 400.times do
     tweet = Tweet.create(content: Faker::Internet.user_agent, user_id: rand(5))
+    puts "Se ha creado un tweet"
 end
+
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

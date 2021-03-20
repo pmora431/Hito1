@@ -21,9 +21,10 @@
   <% start_time = tweet.created_at %>
   <% end_time = Time.current %>
   <%= link_to distance_of_time_in_words(start_time, end_time), tweet %>
+  <br>
+  <%= link_to 'Retweet', retweet_tweet_path(tweet.id), method: :post %>
   </div>
 </div>
 <br>
 <% end %>
-<%= paginate @tweets %>
 </div>
