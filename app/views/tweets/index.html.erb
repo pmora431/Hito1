@@ -6,14 +6,7 @@
 <br>
 <br>
 
-<%= form_with url: "/tweets", method: :get, class: "form-inline" do |form| %>
-    <div class="form-group mx-sm-3 mb-2">
-     <%= form.label :query, "Filtrar proyectos: " %>
-      <%= form.text_field :content, class:'form-control' %>
-      </div>
-     <%= form.submit "Buscar", class: 'btn btn-success mb-2' %>
-   <% end %>
-   <br>
+
 
 
 <div class="container text-center">
@@ -25,14 +18,31 @@
     <%= tweet.user.picture %>
   </div>
   <div class="card-body">
-    <p class="card-text"><%= tweet.content %></p>
+  <p class="card-text">
+    <% contentarray = tweet.content.split(' ') %>
+    <% i = 0 %>
+    <% string = "" %>
+    <% contentarray.each do %>
+        <% if contentarray[i][0] == '#' %>
+          <% hashtag = contentarray[i].sub "#", "%23" %>
+          <%=  link_to contentarray[i], "/tweets?content=#{hashtag}&commit=Buscar" %>
+          <%= ' ' %>
+        <% else %>
+          <%= contentarray[i].to_s %>
+          <%= ' ' %>
+        <% end %>
+      <% i += 1 %>
+    <% end %>
+  </p>
   </div>
   <div class="card-footer text-muted">
   <% start_time = tweet.created_at %>
   <% end_time = Time.current %>
   <%= link_to distance_of_time_in_words(start_time, end_time), tweet %>
   <br>
+  <%if user_signed_in? %>
   <%= link_to 'Retweet', retweet_tweet_path(tweet.id), method: :post %>
+  <% end %>
   </div>
 </div>
 <br>

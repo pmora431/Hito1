@@ -4,9 +4,9 @@ class TweetsController < ApplicationController
 
   # GET /tweets or /tweets.json
   def index
-    @tweets = Tweet.all.page(params[:page])
-    if params[:content] and params[:content] != 'all'
-      @tweets = @tweets.where(content: params[:content])
+    @tweets = Tweet.all.page(params[:page]).order("created_at DESC")
+    if params[:content] and params[:content] != ''
+      @tweets = @tweets.where('content LIKE ?', "%#{params[:content]}%").order("created_at DESC")
     end
   end
 
@@ -32,7 +32,7 @@ class TweetsController < ApplicationController
         format.html { redirect_to tweets_path, notice: "Tweet was successfully created." }
         format.json { render :index, status: :created, location: @tweet }
       else
-        @tweets = Tweet.order(sort_column + " " + sort_direction).page(params[:page])
+        @tweets = Tweet.all.page(params[:page]).order("created_at DESC")
         format.html { render :index, status: :unprocessable_entity }
         format.json { render json: @tweet.errors, status: :unprocessable_entity }
       end
