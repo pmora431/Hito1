@@ -6,12 +6,12 @@ class LikesController < ApplicationController
         respond_to do |format| 
             if @tweet.likes.where(user_id: current_user.id).count === 0 
             @like = Like.create(tweet_id: @tweet.id, user_id: current_user.id)
-            format.html { redirect_to tweets_path, notice: "Tweet was successfully created." }
+            format.html { redirect_to tweets_path, notice: "" }
             format.json { render :index, status: :created, location: @tweet }
             elsif @tweet.likes.where(user_id: current_user.id).count > 0
             @tweet.likes.where(user_id: current_user.id).each do |like|
                 like.destroy
-                format.html { redirect_to tweets_path, notice: "Tweet was successfully deleted." }
+                format.html { redirect_to tweets_path, notice: "" }
                 format.json { render :index, status: :created, location: @tweet }
             end
             end
